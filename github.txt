@@ -1,0 +1,484 @@
+Clients git:
+
+	gitimmersion.com
+	syntevo.com
+
+Ajuda:
+
+	http://think-like-a-git.net
+	http://gitimmersion.com
+	help.github.com
+
+	oficial:
+		http://git-scm.com/book
+		http://git-scm.com/book/en/Getting-Started-Installing-Git
+
+	terminal:
+		$ git help commit
+
+
+
+Dir-li a git qui som:
+
+	git config --global user.name "Daniel"
+	git config --global user.email "info@shoppix.es"
+
+
+Clonar un repositori:
+
+	git clone https://github.com/LeonidasEsteban/curso-responsive-design.git
+
+Crear un repositori:
+
+	cd prova-git/
+	git init
+	touch readme2
+	git add readme2
+	git status
+	git commit -m "hello world"
+	git remote add origin git@github.com:dbassa/prova-git.git <-- connectem el repositori remote amb el local
+	git pull origin master
+	git push origin master
+
+Fer un fork d'un repositori:
+
+	Fer el fork a la nostra compte de github
+	mkdir opencart
+	cd opencart
+	git init
+	git remote add origin git@github.com:dbassa/opencart.git
+	git pull origin master
+
+Sincronitzar el upstream (crec que és opencart original) i així conservarem els nostres canvis:
+
+	git remote -v
+		origin	git@github.com:dbassa/opencart.git (fetch)
+		origin	git@github.com:dbassa/opencart.git (push)
+
+	git remote add upstream https://github.com/opencart/opencart.git
+
+	git remote -v
+		origin	git@github.com:dbassa/opencart.git (fetch)
+		origin	git@github.com:dbassa/opencart.git (push)
+		upstream	https://github.com/opencart/opencart.git (fetch)
+		upstream	https://github.com/opencart/opencart.git (push)
+
+	git fetch upstream
+	git branch -va <- v - verbose a - all (list remote and local brances)
+	git merge upstream/master
+
+Renombrar un repositori remot:
+
+	git remote rename origin destination
+
+Crear branques / branches (el mateix projecte en paral·lel):
+
+	git branch prova2
+	git branch prova3
+
+Veure quines branques hem creat:
+
+	git branch
+
+
+Eliminar un branca remota:
+
+	git push origin --delete <branchName>
+	git push origin :<branchName>
+
+
+Eliminar una branca local:
+
+	git branch -d the_local_branch
+
+
+Canviar de branca:
+
+	git checkout prova2 <-- quan canviem els canvis nomes queden reflexats a prova2
+
+
+Crear un tag (post-it a un commit)
+	
+	git tag v1.0 <-- tag light weight
+	git tag -a v1.2 -m 'version 1.2' <-- tag complert -a annotated -m message (aquest tipus de tag és el que s'aconsella i és un objecte complert a git)
+	git tag -a v1.2 -m 'version 1.2' 9fceb02 <-- tag complert al commit que volguem
+
+
+Modificar un commit el bbc643cd:
+
+	$ git rebase --interactive bbc643cd^
+	<-- fer els canvis que volem -->
+	$ git add <filepattern>
+	$ git commit --amend
+	$ git rebase --continue <- to go back to the previous head commit.
+
+
+Undoing changes - rollback changes - desfer
+	
+	Remove last commit:
+
+		$ git reset HEAD
+
+	http://git-scm.com/book/en/Git-Basics-Undoing-Things
+
+	Changing Your Last Commit
+		
+		$ git commit -m 'initial commit'
+		$ git add forgotten_file
+		
+		$ git commit --amend
+
+	Unstaging a Staged (hem fet add en el fitxer) File
+
+		$ git reset HEAD benchmarks.rb
+
+	Unmodifying a Modified File (si a un fitxer li hem modificat alguna cosa git status en avisa que hem de fer un add - staging)
+
+		$ git checkout -- benchmarks.rb <-- fent això deixa de avisar-nos que fem add. Es desfà el canvi
+
+
+
+	Undoing Local Changes (before staging) - http://gitimmersion.com/lab_14.html
+		
+		$ git checkout hello.rb
+
+	Undoing Staged Changes (before committing) - Unstaging - http://gitimmersion.com/lab_15.html
+		
+		$ git reset HEAD hello.rb
+
+	Undoing Committed Changes - http://gitimmersion.com/lab_16.html
+
+		$ git revert HEAD
+
+	Removing Commits from a Branch - http://gitimmersion.com/lab_17.html
+
+		$ git reset --hard [v1][hash][HEAD^][branch] <- força a moure. el hard aplica els canvis al working directory. sense arguments desferia l'ultim merge.
+						    |
+						   tag
+
+	Eliminar els dos commits anteriors a github pero no a local:
+
+		$ git push -f origin HEAD^^:master
+		$ git push -f origin HEAD^:master
+		
+		For example, if it's your last commit, you can do:
+
+		$ git rebase -i HEAD~2 - and delete the second line within the editor window that pops up. Then, force push to GitHub by using:
+
+		$ git push origin +master.
+
+
+
+	Desfer un push (reverting):
+
+		Use Git revert for reverting your push.
+
+		    $ git-revert - Revert some existing commits
+		    $ git revert [--edit | --no-edit] [-n] [-m parent-number] [-s] …
+		    $ git revert --continue
+		    $ git revert --quit
+		    $ git revert --abort
+
+		    Revert the changes that the related patches introduce, and record some new commits that record them. This requires your working tree to be clean (no modifications from the HEAD commit).
+
+
+	Ignorar o fer que no es gravin els canvis que fem:
+
+		$ git update-index --assume-unchanged <file>
+
+	  Fer que es tornin a registrar:
+
+		$ git update-index --no-assume-unchanged <file>
+
+	  Veure quins fitxers estan a la llista:
+
+	  	$ git ls-files -v | grep '^h'
+
+
+Editem un fitxer del projecte prova a la branca prova2
+
+	git status: Ens diu quin fitxer s'ha modificat
+	git add fitxermodificat
+	git add . <-- per tots els fitxers
+	git commit -m "descripcio del canvi que hem fet"
+
+	git checkout master <-- tornem a la branca principal
+
+	git merge prova2 <-- fusionem els dos projectes
+
+	git push origin master <-- enviem els canvis a github
+
+
+Per veure les keys dels commits i poder llavors fer un checkout a un commit o posar-li un tag per exemple
+
+	git log --pretty=oneline [--all] (all totes les branques)
+	git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+
+	* bb2d77f 2013-07-29 | Update copia.txt (HEAD, copia-master) [dbassa]
+	* 46bbca3 2013-07-29 | creem un fitxer a la branca copia-master (origin/copia-master) [Daniel]
+	* e19b512 2013-07-29 | hem afegir per maria a josy.txt a copia-master [Daniel]
+	* c6115ea 2013-07-29 | hem tret la y al fitxer dani.txt [Daniel]
+	* 792632f 2013-07-29 | Update josy.txt [dbassa]
+	* 8bd3b8a 2013-07-29 | Update josy.txt [dbassa]
+	* fbc97f2 2013-07-29 | afegim el fitxer josy.txt [Daniel]
+	* 5287f35 2013-07-29 | afegim josy al fitxer dani.txt [Daniel]
+	* 26a674d 2013-07-29 | afegim y al fitxer dani.txt [Daniel]
+	* 3478d82 2013-07-29 | afegim el fitxer dani [Daniel]
+	* 005f406 2013-07-29 | Merge branch 'master' of github.com:dbassa/prova-git [Daniel]
+	|\  
+	| * cb1c189 2013-07-29 | Initial commit [dbassa]
+	* 8de5643 2013-07-29 | hello world [Daniel]
+
+	Despres podriem fer un git checkout e19b512 i es produiria un Detached Head (veure més avall)
+
+
+Per eliminar un commit del history:
+
+	$ git rebase -i 262d1f7 <- El punt a partir del qual veurem en el nano
+
+	Exemple:
+
+	$ git log
+
+	Number 	Hash 	Commit Message 	Author
+	1 	2c6a45b 	(HEAD) Adding public method to access protected method 	Tom
+	2 	ae45fab 	Updates to database interface 	Contractor 1
+	3 	77b9b82 	Improving database interface 	Contractor 2
+	4 	3c9093c 	Merged develop branch into master 	Tom
+	5 	b3d92c5 	Adding new Event CMS Module 	Paul
+	6 	7feddbb 	Adding CMS class and files 	Tom
+	7 	a809379 	Adding project to Git 	Tom
+
+
+	Si és l'últim commit:
+
+		$ git reset HEAD
+
+	(AMB CHERRY-PICK) Si no és l'ultim i volem guardar el 1 i 3 :
+	
+	a) creant una branca
+
+		$ git checkout b3d92c5 - Anem fins on està tot bé
+		$ git checkout -b repair - Create a new branch to work on.
+		$ git cherry-pick 77b9b82 - Seleccionem els que volem guardar
+		$ git cherry-pick 2c6a45b - Seleccionem els que volem guardar
+		$ git checkout master - Checkout master.
+		$ git reset --hard b3d92c5 - Reset master to last usable commit.
+		$ git merge repair - Merge our new branch onto master.
+		$ git push --hard origin master - Push master to the remote repo.
+
+		Més info: http://think-like-a-git.net/sections/rebase-from-the-ground-up/cherry-picking-explained.html
+
+	b) sense crear branca
+
+		$ git reset --hard b3d92c5 - Reset master to last usable commit.
+		$ git cherry-pick 77b9b82 - Seleccionem els que volem guardar
+		$ git cherry-pick 2c6a45b - Seleccionem els que volem guardar
+		$ git push --hard origin master - Push master to the remote repo.
+
+
+	(AMB REBASE) i volem eliminar el 2 i 3
+
+	$ git rebase --onto <branch name>~<first commit number to remove> <branch name>~<first commit to be kept> <branch name>
+	$ git rebase --onto repair~3 repair~1 repair
+
+
+Per saber on està el head ara mateix:
+
+	cat .git/HEAD
+
+
+
+PROVAR EL CODI I PODER DESFER-LO (dues maneres de fer-ho):
+
+
+	a) Fer la prova d'un nou codi que tenim en una branca new_feature
+
+		Make sure you're on the right branch and that you have a clean working state.
+
+		$ git checkout -b test_branch
+		$ git merge new_feature
+
+		<---- FEM LES PROVES ---->
+
+		FUNCIONA:
+
+		$ git checkout master
+		$ git merge test_branch
+
+		NO FUNCIONA:
+
+		$ git checkout master
+		$ git branch -D test_branch
+
+
+	b) Fer la prova d'un nou codi que tenim en una branca new_feature i crear una branca savepoint com a punt de retorn
+
+		Make sure you're on the right branch and that you have a clean working state.
+
+		$ git branch savepoint <- creem una branca pero continuem estan a la master
+		$ git merge new_feature
+
+		<---- FEM LES PROVES ---->
+
+		FUNCIONA:
+
+		$ git branch -d savepoint <- eliminem la branca savepoint
+
+		NO FUNCIONA:
+
+		$ git reset --hard savepoint <- fem reset la branca master a savepoint (llavors si volem podem eliminar savepoint)
+
+
+	c) Interessant manera de provar canvis:
+
+		$ git stash
+		<---- FEM ELS CANVIS ---->
+		$ git stash apply [--index] (index intenta de deixar les coses com estaven abans de fer el stash. per exemple si teniem staged un fitxer el deixa staged també)
+		$ git stash drop
+
+		Aplicar alguns canvis que hem fet:
+
+		$ git stash list
+
+		stash@{0}: WIP on master: 049d078 added the index file
+		stash@{1}: WIP on master: c264051... Revert "added file_size"
+		stash@{2}: WIP on master: 21d80a5... added number to log
+
+		$ git stash stash@{1}
+
+		Aplicar i eliminar els canvis:
+
+		$ git stash pop
+
+		Desfer canvis que haviem aplicat amb stash:
+
+		$ git stash show -p [stash@{0}] | git apply -R
+
+
+Quant el head no fa referencia al nom d'una branca, diem que està en:
+
+DETACHED HEAD:
+
+	Quan fem un checkout a un commit i no a un nom de la branca.
+
+	Per defecte, quan fem un git chekcout branca l'index va l'última modificacio / commit de la branca.
+
+	Al fer git checkout a un commit movem aquest index.
+
+	DETACHED HEAD (del manual)
+	       HEAD normally refers to a named branch (e.g. master). Meanwhile, each branch refers to a specific commit. Let’s look at a repo with
+	       three commits, one of them tagged, and with branch master checked out:
+
+	                      HEAD (refers to branch 'master')
+	                       |
+	                       v
+	           a---b---c  branch 'master' (refers to commit 'c')
+	               ^
+	               |
+	             tag 'v2.0' (refers to commit 'b')
+
+
+	       When a commit is created in this state, the branch is updated to refer to the new commit. Specifically, git commit creates a new commit
+	       d, whose parent is commit c, and then updates branch master to refer to new commit d. HEAD still refers to branch master and so
+	       indirectly now refers to commit d:
+
+	           $ edit; git add; git commit
+
+	                          HEAD (refers to branch 'master')
+	                           |
+	                           v
+	           a---b---c---d  branch 'master' (refers to commit 'd')
+	               ^
+	               |
+	             tag 'v2.0' (refers to commit 'b')
+
+
+	       It is sometimes useful to be able to checkout a commit that is not at the tip of any named branch, or even to create a new commit that
+	       is not referenced by a named branch. Let’s look at what happens when we checkout commit b (here we show two ways this may be done):
+
+	           $ git checkout v2.0  # or
+	           $ git checkout master^^
+
+	              HEAD (refers to commit 'b')
+	               |
+	               v
+	           a---b---c---d  branch 'master' (refers to commit 'd')
+	               ^
+	               |
+	             tag 'v2.0' (refers to commit 'b')
+
+
+	       Notice that regardless of which checkout command we use, HEAD now refers directly to commit b. This is known as being in detached HEAD
+	       state. It means simply that HEAD refers to a specific commit, as opposed to referring to a named branch. Let’s see what happens when we
+	       create a commit:
+
+	           $ edit; git add; git commit
+
+	                HEAD (refers to commit 'e')
+	                 |
+	                 v
+	                 e
+	                /
+	           a---b---c---d  branch 'master' (refers to commit 'd')
+	               ^
+	               |
+	             tag 'v2.0' (refers to commit 'b')
+
+
+	       There is now a new commit e, but it is referenced only by HEAD. We can of course add yet another commit in this state:
+
+	           $ edit; git add; git commit
+
+	                    HEAD (refers to commit 'f')
+	                     |
+	                     v
+	                 e---f
+	                /
+	           a---b---c---d  branch 'master' (refers to commit 'd')
+	               ^
+	               |
+	             tag 'v2.0' (refers to commit 'b')
+
+
+	       In fact, we can perform all the normal git operations. But, let’s look at what happens when we then checkout master:
+
+	           $ git checkout master
+
+	                          HEAD (refers to branch 'master')
+	                 e---f     |
+	                /          v
+	           a---b---c---d  branch 'master' (refers to commit 'd')
+	               ^
+	               |
+	             tag 'v2.0' (refers to commit 'b')
+
+
+	       It is important to realize that at this point nothing refers to commit f. Eventually commit f (and by extension commit e) will be
+	       deleted by the routine git garbage collection process, unless we create a reference before that happens. If we have not yet moved away
+	       from commit f, any of these will create a reference to it:
+
+	           $ git checkout -b foo   (1)
+	           $ git branch foo        (2)
+	           $ git tag foo           (3)
+
+
+	       1. creates a new branch foo, which refers to commit f, and then updates HEAD to refer to branch foo. In other words, we’ll no longer be
+	       in detached HEAD state after this command.
+	       2. similarly creates a new branch foo, which refers to commit f, but leaves HEAD detached.
+	       3. creates a new tag foo, which refers to commit f, leaving HEAD detached.
+
+	       If we have moved away from commit f, then we must first recover its object name (typically by using git reflog), and then we can create
+	       a reference to it. For example, to see the last two commits to which HEAD referred, we can use either of these commands:
+
+	           $ git reflog -2 HEAD # or
+	           $ git log -g -2 HEAD
+
+
+
+
+Fer el garbage collection:
+	
+	$ git gc
+
+
