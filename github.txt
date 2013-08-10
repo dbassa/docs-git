@@ -52,12 +52,14 @@ Fer un fork d'un repositori:
 Sincronitzar el upstream (crec que és opencart original) i així conservarem els nostres canvis:
 
 	git remote -v
+
 		origin	git@github.com:dbassa/opencart.git (fetch)
 		origin	git@github.com:dbassa/opencart.git (push)
 
 	git remote add upstream https://github.com/opencart/opencart.git
 
 	git remote -v
+	
 		origin	git@github.com:dbassa/opencart.git (fetch)
 		origin	git@github.com:dbassa/opencart.git (push)
 		upstream	https://github.com/opencart/opencart.git (fetch)
