@@ -40,6 +40,10 @@ Crear un repositori:
 	git pull origin master
 	git push origin master
 
+Eliminar un remote:
+
+	git remote rm destination
+
 Fer un fork d'un repositori:
 
 	Fer el fork a la nostra compte de github
