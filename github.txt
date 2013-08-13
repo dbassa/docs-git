@@ -154,7 +154,7 @@ Undoing changes - rollback changes - desfer
 
 	Undoing Committed Changes - http://gitimmersion.com/lab_16.html
 
-		$ git revert HEAD
+		$ git reset HEAD
 
 	Removing Commits from a Branch - http://gitimmersion.com/lab_17.html
 
@@ -488,3 +488,18 @@ Fer el garbage collection:
 	$ git gc
 
 
+Eliminar un fitxer:
+
+	Unstaged
+
+		$ git rm fitxer.txt <- elimnina el fitxer en el working directory
+
+	Staged
+
+		$ git rm -f fitxer.txt <- forcem a eliminar el fitxer en el working directory
+		$ git rm --cached fitxer.txt <- li treu el staged i el deixa unstaged (no l'elimnina del working directory)
+
+
+Renombrar un fitxer:
+
+	$ git mv NomVell.txt NouNou.txt
