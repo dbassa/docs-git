@@ -503,3 +503,67 @@ Eliminar un fitxer:
 Renombrar un fitxer:
 
 	$ git mv NomVell.txt NouNou.txt
+
+
+Desfer canvis en el working directory: http://stackoverflow.com/questions/5473/undoing-a-git-reset-hard-head1
+
+	Intentar Recuperar uns canvis que hem perdut:
+
+		$ git fsck --lost-found
+		$ git show f6ce1a403399772d4146d306d5763f3f5715cb5a # per veure quin és
+		$ git rebase f6ce1a403399772d4146d306d5763f3f5715cb5a # per recuperar-lo
+
+	Diferencies entre HEAD~1 i HEAD@{1}
+
+		$ git init
+		$ git commit --allow-empty -mOne
+		$ git commit --allow-empty -mTwo
+		$ git checkout -b anotherbranch
+		$ git commit --allow-empty -mThree
+		$ git checkout master # This changes the HEAD, but not the repository contents
+		$ git show HEAD~1 # => One
+		$ git show HEAD@{1} # => Three
+		$ git reflog
+
+		HEAD~1 means go to "parent of HEAD," while HEAD@{1} go to "go back one step in HEAD's history"
+
+	Reset Hard:
+
+		What you want to do is to specify the sha1 of the commit you want to restore to. You can get the sha1 by examining the reflog (git reflog / git log -g) and then doing
+
+		$ git reset --hard <sha1 of desired commit>
+
+	Exemple complert:
+
+		$ git init
+		Initialized empty Git repository in .git/
+
+		$ echo "testing reset" > file1
+		$ git add file1
+		$ git commit -m 'added file1'
+		Created initial commit 1a75c1d: added file1
+		 1 files changed, 1 insertions(+), 0 deletions(-)
+		 create mode 100644 file1
+
+		$ echo "added new file" > file2
+		$ git add file2
+		$ git commit -m 'added file2'
+		Created commit f6e5064: added file2
+		 1 files changed, 1 insertions(+), 0 deletions(-)
+		 create mode 100644 file2
+
+		$ git reset --hard HEAD^
+		HEAD is now at 1a75c1d... added file1
+
+		$ cat file2
+		cat: file2: No such file or directory
+
+		$ git reflog
+		1a75c1d... HEAD@{0}: reset --hard HEAD^: updating HEAD
+		f6e5064... HEAD@{1}: commit: added file2
+
+		$ git reset --hard f6e5064
+		HEAD is now at f6e5064... added file2
+
+		$ cat file2
+		added new file
