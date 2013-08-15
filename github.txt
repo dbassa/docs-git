@@ -572,3 +572,73 @@ Desfer canvis en el working directory: http://stackoverflow.com/questions/5473/u
 Descarregar una branca remota:
 
 	$ git checkout -t origin/branch-name
+
+
+Borrar un commit:
+
+	git reset --hard WILL DELETE YOUR WORKING DIRECTORY CHANGES
+
+	$ git reset --hard [HEAD~1][sha1-commit-id]
+
+	If you already pushed it, you will need to do a force push to get rid of it...
+
+	$ git push origin HEAD --force
+
+	a)
+	git reset --hard HEAD is great if you want to get rid of WORK IN PROGRESS. 
+	It will reset you back to the most recent commit, and erase all the changes in your working tree and index.
+	Lastly, if you need to find a commit that you "deleted", it is typically present in git reflog unless you have garbage collected your repository.
+
+	b)
+	HEAD~1 or just HEAD^. If you pushed, you should use git revert instead.
+
+	c)
+	be sure to stash any local changes you want to keep before running this command...
+
+	d)
+	Obviously you can also use HEAD~n to "go back" n commits from your head. Maybe from this point you can interpreted ... --hard HEAD also as HEAD~0 => deleting work in progress
+
+	e)
+	If you want to keep your work and just 'undo' that commit command (you caught before pushing to repo):
+
+	git reset --soft HEAD~1
+
+	Do not use the --hard flag unless you want to destroy your work in progress since the last commit.
+
+	f)
+	git rebase -i <commit>~1
+
+	This will start the rebase in interactive mode -i at the point just before the commit you want to whack. The editor will start up listing all of the commits since then. Delete the line containing the commit you want to obliterate and save the file. Rebase will do the rest of the work, deleting only that commit, and replaying all of the others back into the log.
+
+
+	Example:
+
+	$ git log --pretty=oneline --abbrev-commit
+
+	46cd867 Changed with mistake
+	d9f1cf5 Changed again
+	105fd3d Changed content
+	df33c8a First commit
+
+	$ git rebase -i HEAD~2
+
+	That command will open your default text editor with your two (Change the number 2 with the number of commits you want to get) latest commits:
+
+	pick d9f1cf5 Changed again
+	pick 46cd867 Changed again with dashes
+
+	# Rebase 105fd3d..46cd867 onto 105fd3d
+	#
+	# Commands:
+	#  p, pick = use commit
+	#  r, reword = use commit, but edit the commit message
+	#  e, edit = use commit, but stop for amending
+	#  s, squash = use commit, but meld into previous commit
+	#  f, fixup = like "squash", but discard this commit's log message
+	#  x, exec = run command (the rest of the line) using shell
+	#
+	# If you remove a line here THAT COMMIT WILL BE LOST.
+	# However, if you remove everything, the rebase will be aborted.
+	#
+
+	we just need to delete the line that corresponds to the commit we want to delete and save the file.
