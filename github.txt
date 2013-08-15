@@ -150,6 +150,7 @@ Undoing changes - rollback changes - desfer
 
 	Undoing Staged Changes (before committing) - Unstaging - http://gitimmersion.com/lab_15.html
 		
+		$ git rm --cached <file>
 		$ git reset HEAD hello.rb
 
 	Undoing Committed Changes - http://gitimmersion.com/lab_16.html
