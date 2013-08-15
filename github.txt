@@ -567,3 +567,8 @@ Desfer canvis en el working directory: http://stackoverflow.com/questions/5473/u
 
 		$ cat file2
 		added new file
+
+
+Descarregar una branca remota:
+
+	$ git checkout -t origin/branch-name
