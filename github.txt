@@ -655,3 +655,26 @@ Borrar un commit:
 		#
 
 		we just need to delete the line that corresponds to the commit we want to delete and save the file.
+
+
+Gitignore
+
+	If you create a file in your repository named .gitignore git will use its rules when looking at files to commit. Note that git will not ignore a file that was already tracked before a rule was added to this file to ignore it. In such a case the file must be un-tracked, usually with git rm --cached filename
+
+	This file can be committed into the repository, thus sharing the rule list with any other users that clone the repository.
+
+	Note that you can create a .gitignore in any subpath to have its rules applied at that path. Sometimes an empty .gitignore file is used as a placeholder for an empty path, for example to force git to generate a log/ path for your development environment to use.
+
+
+	REPOSITORY EXCLUDE
+
+	Local per-repository rules can be added to the .git/info/exclude file in your repository. These rules are not committed with the repository so they are not shared with others. This method can be used for locally-generated files that you don't expect other users to generate, like files created by your editor.
+
+	
+	IGNORING VERSIONED FILES
+
+	Some files in a repository, which are versioned (_i.e._ they can't be git-ignored), are often changed, but rarely committed. Usually these are various local configuration files that are edited, but should never be committed upstream.
+
+	Git lets you ignore those files by assuming they are unchanged. This is done by running the git update-index --assume-unchanged path/to/file.txt command. Once marking a file as such, git will completely ignore any changes on that file; they will not show up when running git status or git diff, nor will they ever be committed.
+
+	To make git track the file again, simply run git update-index --no-assume-unchanged path/to/file.txt.
