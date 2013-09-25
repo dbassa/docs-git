@@ -142,7 +142,7 @@ Undoing changes - rollback changes - desfer
 
 	http://git-scm.com/book/en/Git-Basics-Undoing-Things
 
-	Changing Your Last Commit
+	Modificar un commit - Changing Your Last Commit
 		
 		$ git commit -m 'initial commit'
 		$ git add forgotten_file
@@ -229,6 +229,11 @@ Editem un fitxer del projecte prova a la branca prova2
 	git merge prova2 <-- fusionem els dos projectes
 
 	git push origin master <-- enviem els canvis a github
+
+
+Desfer / avortar un merge
+
+	git merge --abort
 
 
 Per veure les keys dels commits i poder llavors fer un checkout a un commit o posar-li un tag per exemple
@@ -670,6 +675,41 @@ Borrar un commit:
 		#
 
 		we just need to delete the line that corresponds to the commit we want to delete and save the file.
+
+
+Moure / move commits a una altra branca
+    											C - D - E newbranch
+	            								/
+	master A - B - C - D - E 	to 	master A - B 
+
+
+	a) a una nova branca
+
+		git branch newbranch
+		git reset --hard HEAD~3 # Go back 3 commits. You *will* lose uncommitted work.
+		git checkout newbranch
+
+	b) branca existent
+
+		git checkout existingbranch
+		git merge master
+		git checkout master
+		git reset --hard HEAD~3 # Go back 3 commits. You *will* lose uncommitted work.
+		git checkout existingbranch
+
+	c) seleccionar commits
+
+		git checkout newbranch
+		git cherry-pick 612ecb3
+		git cherry-pick 453ac3d
+		git cherry-pick 9aa1233
+
+		o
+
+		git checkout newbranch
+		git cherry-pick 612ecb3..9aa1233
+
+
 
 
 Gitignore
