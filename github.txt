@@ -87,7 +87,7 @@ Veure quines branques hem creat:
 	git branch
 
 
-Eliminar un branca remota:
+Eliminar una branca remota:
 
 	git push origin --delete <branchName>
 	git push origin :<branchName>
@@ -110,7 +110,7 @@ Crear un tag (post-it a un commit)
 	git tag -a v1.2 -m 'version 1.2' 9fceb02 <-- tag complert al commit que volguem
 
 
-Modificar un commit el bbc643cd:
+Modificar / afegir canvis a un commit el bbc643cd:
 	
 
 	$ git rebase --interactive bbc643cd^
@@ -134,7 +134,7 @@ Modificar un commit el bbc643cd:
         Once you save, Git will replay the listed commits. 
 
 
-Undoing changes - rollback changes - desfer
+Undoing / desfer changes - rollback changes - desfer
 	
 	Remove last commit:
 
@@ -235,6 +235,11 @@ Desfer / avortar un merge
 
 	git merge --abort
 
+
+Per veure el que esta passant:
+
+git log
+git log --summary <- per veure més informacio
 
 Per veure les keys dels commits i poder llavors fer un checkout a un commit o posar-li un tag per exemple
 
@@ -733,3 +738,53 @@ Gitignore
 	Git lets you ignore those files by assuming they are unchanged. This is done by running the git update-index --assume-unchanged path/to/file.txt command. Once marking a file as such, git will completely ignore any changes on that file; they will not show up when running git status or git diff, nor will they ever be committed.
 
 	To make git track the file again, simply run git update-index --no-assume-unchanged path/to/file.txt.
+
+
+
+GIT DIFF
+
+
+	git diff
+
+		Shows the changes between the working directory and the index. This shows what has been changed, but is not staged for a commit.
+
+	git diff --cached
+
+		Shows the changes between the index and the HEAD(which is the last commit on this branch). This shows what has been added to the index and staged for a commit.
+
+	git diff HEAD
+
+		Shows all the changes between the working directory and HEAD (which includes changes in the index). This shows all the changes since the last commit, whether or not they have been staged for commit or not.
+
+	diffuse -m
+
+		Veure els canvis amb diffuse (s'ha de fer dins el working directory)
+
+
+OBLIGAR FORÇAR EL MERGE DESDE EL REMOTE (OPENCART)
+
+	S'ha d'anar en compte, qualsevol canvi que hágim fet al working tree s'esborrarà
+
+	1.-
+	git fetch --all
+	git reset --hard origin/master
+
+	Explanation:
+
+	git fetch downloads the latest from remote without trying to merge or rebase anything.
+
+	Then the git reset resets the master branch to what you just fetched. The --hard option changes all the files in your working tree to match the files in origin/master, !!! so if you have any local changes, they will be lost. With or without --hard, any local commits that haven't been pushed will be lost.
+
+	If you have any files that are not tracked by Git (e.g. uploaded user content), these files will not be affected.
+
+	2.-
+	git reset --hard HEAD
+	git clean -f -d <-This deletes/eliminar all your untracked files/directories
+	git pull
+
+DESFER ELS CANVIS QUE ENCARA NO HAN ESTAT STAGED EN EL WORKING DIRECTORY
+
+	1.- un únic fitxer:
+		git checkout path/to/file/to/revert
+	2.- tots els fitxers:
+		git checkout -- .
